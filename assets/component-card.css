@@ -115,7 +115,6 @@
 
 .card__inner {
   width: 100%;
-  overflow: hidden;
 }
 
 .card--media .card__inner .card__content {
