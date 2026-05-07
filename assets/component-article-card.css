@@ -6,9 +6,7 @@
 
 .article {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 1rem;
+  align-items: center;
 }
 
 .article.grid__item {
@@ -21,6 +19,10 @@
 
 .article-card__image-wrapper > a {
   display: block;
+}
+
+.article-card-wrapper {
+  overflow: hidden;
 }
 
 .article-card__title {
@@ -78,6 +80,11 @@
 .article-card__excerpt {
   width: 100%;
   margin-top: 1.2rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 
 .article-card__link:not(:only-child) {
