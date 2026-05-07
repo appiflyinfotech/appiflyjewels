@@ -19,7 +19,7 @@
       endif
 
       assign show_dynamic_checkout = false
-      if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
+      if block.settings.show_dynamic_checkout
         assign show_dynamic_checkout = true
       endif
     -%}
@@ -94,7 +94,34 @@
             {%- render 'loading-spinner' -%}
           </button>
           {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
+            <div class="dynamic-checkout__buttons">
+              {{ form | payment_button }}
+              <button
+                type="submit"
+                name="add"
+                class="product-form__submit button button--full-width button--primary buy-now-fallback hidden"
+                onclick="this.form.action='/checkout'; this.form.submit(); return false;"
+              >
+                Buy it now
+              </button>
+            </div>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const checkPaymentButton = setInterval(function() {
+                  const paymentButton = document.querySelector('.shopify-payment-button');
+                  if (paymentButton) {
+                    if (paymentButton.children.length === 0 || paymentButton.innerText.trim() === '') {
+                      document.querySelector('.buy-now-fallback')?.classList.remove('hidden');
+                    } else {
+                       document.querySelector('.buy-now-fallback')?.classList.add('hidden');
+                    }
+                    clearInterval(checkPaymentButton);
+                  }
+                }, 1000);
+                // Also clear after 5 seconds to prevent infinite loop
+                setTimeout(() => clearInterval(checkPaymentButton), 5000);
+              });
+            </script>
           {%- endif -%}
         </div>
       {%- endform -%}
