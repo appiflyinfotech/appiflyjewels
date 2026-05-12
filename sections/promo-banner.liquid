@@ -1,0 +1,157 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  
+  .promo-banner-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .promo-banner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+  .promo-banner-image img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  .promo-banner-content h2 {
+    font-size: calc(var(--font-heading-scale) * 3rem);
+    margin: 0 0 1rem;
+    color: inherit;
+  }
+  .promo-banner-content p {
+    font-size: 1.8rem;
+    margin: 0 0 2rem;
+    opacity: 0.9;
+  }
+  .promo-banner-link {
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    padding: 1.5rem 3rem;
+    border: 1px solid currentColor;
+    transition: all 0.3s ease;
+  }
+  .promo-banner-link:hover {
+    background: currentColor;
+    color: {{ section.settings.background_color }};
+  }
+{%- endstyle -%}
+
+<div class="promo-banner-{{ section.id }} section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="promo-banner-container">
+      {%- if section.settings.image != blank -%}
+        <div class="promo-banner-image">
+          {{ section.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+        </div>
+      {%- endif -%}
+      <div class="promo-banner-content">
+        <h2>{{ section.settings.title }}</h2>
+        <p>{{ section.settings.text }}</p>
+        {%- if section.settings.link_label != blank -%}
+          <a href="{{ section.settings.link_url }}" class="promo-banner-link">
+            {{ section.settings.link_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Free Gift Promo Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Unlock a Free Silver Chain"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Complimentary gift on all orders above $2,000. Limited time offer."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Promo Image"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Free Gift Promo Banner"
+    }
+  ]
+}
+{% endschema %}

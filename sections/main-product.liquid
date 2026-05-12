@@ -674,6 +674,47 @@
                 </product-recommendations>
               {%- when 'icon-with-text' -%}
                 {% render 'icon-with-text', block: block %}
+              {%- when 'free_gift_offer' -%}
+                {%- if settings.enable_free_gift -%}
+                  <div class="product-free-gift-offer" {{ block.shopify_attributes }}>
+                    <div class="product-free-gift-offer__content">
+                      <span class="icon-gift">
+                        {{- 'icon-gift.svg' | inline_asset_content -}}
+                      </span>
+                      <div>
+                        <p class="h4">{{ block.settings.heading | escape }}</p>
+                        <p>{{ block.settings.text | escape }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <style>
+                    .product-free-gift-offer {
+                      margin: 2.5rem 0;
+                      padding: 1.5rem;
+                      border: 1px solid #d4af37;
+                      background: #fffdf5;
+                      border-radius: 4px;
+                    }
+                    .product-free-gift-offer__content {
+                      display: flex;
+                      gap: 1.5rem;
+                      align-items: flex-start;
+                    }
+                    .product-free-gift-offer .icon-gift {
+                      width: 2.4rem;
+                      height: 2.4rem;
+                      color: #d4af37;
+                      flex-shrink: 0;
+                    }
+                    .product-free-gift-offer p {
+                      margin: 0;
+                    }
+                    .product-free-gift-offer .h4 {
+                      margin-bottom: 0.5rem;
+                      color: #121212;
+                    }
+                  </style>
+                {%- endif -%}
             {%- endcase -%}
           {%- endfor -%}
           <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -746,6 +787,25 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "free_gift_offer",
+      "name": "Free Gift Offer",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Special Offer: Free Gift"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Offer Text",
+          "default": "Get a free Silver Chain on orders above $2000!"
+        }
+      ]
     },
     {
       "type": "text",

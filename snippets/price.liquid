@@ -38,6 +38,26 @@
   if target == product and product.price_varies
     assign money_price = 'products.product.price.from_price_html' | t: price: money_price
   endif
+  
+  if settings.enable_auto_discount and settings.auto_discount_collection != blank
+    assign is_auto_discount_item = false
+    for collection in product.collections
+      if collection.handle == settings.auto_discount_collection.handle
+        assign is_auto_discount_item = true
+        break
+      endif
+    endfor
+    
+    if is_auto_discount_item and compare_at_price == blank or compare_at_price <= price
+      assign auto_discount_multiplier = 100 | minus: settings.auto_discount_percent | divided_by: 100.0
+      assign compare_at_price = price
+      assign price = price | times: auto_discount_multiplier | round
+      assign money_price = price | money
+      if settings.currency_code_enabled
+        assign money_price = price | money_with_currency
+      endif
+    endif
+  endif
 -%}
 
 {%- unless target == null and placeholder == null -%}
@@ -114,7 +134,11 @@
     </div>
     {%- if show_badges -%}
       <span class="badge price__badge-sale color-{{ settings.sale_badge_color_scheme }}">
-        {{ 'products.product.on_sale' | t }}
+        {%- if compare_at_price > price -%}
+          {{ compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round }}% OFF
+        {%- else -%}
+          {{ 'products.product.on_sale' | t }}
+        {%- endif -%}
       </span>
 
       <span class="badge price__badge-sold-out color-{{ settings.sold_out_badge_color_scheme }}">

@@ -1,0 +1,71 @@
+/* Luxury Discount & Gift Styles */
+
+.badge.price__badge-sale {
+  background: #d4af37; /* Luxury Gold */
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  border: none;
+}
+
+.price--on-sale .price-item--regular {
+  color: #999;
+  text-decoration: line-through;
+  margin-right: 1rem;
+}
+
+.price-item--sale {
+  color: #d0021b; /* Sophisticated Red for sales */
+  font-weight: 700;
+}
+
+/* Cart Specific */
+.cart-coupon-wrapper {
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+}
+
+.cart-coupon-container .field__input {
+  border: 1px solid #d4af37;
+  border-radius: 0;
+}
+
+.cart-coupon-container .button {
+  background: #121212;
+  color: #fff;
+  border: 1px solid #121212;
+}
+
+.cart-coupon-container .button:hover {
+  background: #fff;
+  color: #121212;
+}
+
+/* Free Gift Progress */
+.free-gift-progress-bar {
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #d4af37, #f7ef8a, #d4af37);
+  background-size: 200% 100%;
+  animation: shine 3s infinite linear;
+}
+
+@keyframes shine {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.free-gift-ui-container {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #d4af3755;
+}
+
+.product-free-gift-offer {
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.1);
+}

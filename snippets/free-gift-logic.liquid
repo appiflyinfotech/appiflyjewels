@@ -1,0 +1,150 @@
+{%- liquid
+  assign enable_free_gift = settings.enable_free_gift
+  assign gift_threshold = settings.free_gift_threshold | times: 100
+  assign gift_product = settings.free_gift_product
+  assign cart_total = cart.total_price
+  
+  assign is_eligible = false
+  if enable_free_gift and cart_total >= gift_threshold and gift_product != blank
+    assign is_eligible = true
+  endif
+  
+  assign amount_remaining = gift_threshold | minus: cart_total
+  
+  assign gift_in_cart = false
+  for item in cart.items
+    if item.product_id == gift_product.id
+      assign gift_in_cart = true
+      break
+    endif
+  endfor
+-%}
+
+<div class="free-gift-logic-data" 
+  data-eligible="{{ is_eligible }}" 
+  data-in-cart="{{ gift_in_cart }}"
+  data-threshold="{{ gift_threshold }}"
+  data-total="{{ cart_total }}"
+  data-gift-variant-id="{{ gift_product.selected_or_first_available_variant.id }}"
+  style="display:none;"
+></div>
+
+<div class="free-gift-ui-container">
+  {%- if enable_free_gift and gift_product != blank -%}
+    <div class="free-gift-message-wrapper">
+      {%- if is_eligible -%}
+        {%- if gift_in_cart -%}
+          <div class="free-gift-status success">
+            <span class="icon-success">✓</span>
+            <p>Congratulations! Your <strong>{{ settings.free_gift_title }}</strong> has been added to your cart.</p>
+          </div>
+        {%- else -%}
+          <div class="free-gift-status unlocked">
+            <p>You are eligible for a <strong>{{ settings.free_gift_title }}</strong>!</p>
+            <button type="button" class="button button--primary add-free-gift-btn" data-variant-id="{{ gift_product.selected_or_first_available_variant.id }}">
+              Add Free Gift
+            </button>
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <div class="free-gift-status pending">
+          <p>Add <strong>{{ amount_remaining | money }}</strong> more to unlock a <strong>{{ settings.free_gift_title }}</strong>!</p>
+          <div class="free-gift-progress-bar">
+            <div class="progress-fill" style="width: {{ cart_total | times: 100.0 | divided_by: gift_threshold | at_most: 100 }}%;"></div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+    
+    <div class="free-gift-details card">
+      <div class="free-gift-image">
+        {%- if settings.free_gift_image != blank -%}
+          {{ settings.free_gift_image | image_url: width: 100 | image_tag: loading: 'lazy' }}
+        {%- else -%}
+          {{ gift_product.featured_image | image_url: width: 100 | image_tag: loading: 'lazy' }}
+        {%- endif -%}
+      </div>
+      <div class="free-gift-info">
+        <h3>{{ settings.free_gift_title }}</h3>
+        <p>{{ settings.free_gift_description }}</p>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+  .free-gift-ui-container {
+    margin: 2rem 0;
+    padding: 2rem;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background: #fdfdfd;
+    font-family: inherit;
+  }
+  .free-gift-message-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  .free-gift-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+  .free-gift-status p {
+    margin: 0;
+    font-size: 1.6rem;
+  }
+  .free-gift-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #d4af37; /* Luxury Gold */
+    transition: width 0.3s ease;
+  }
+  .free-gift-details {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px dashed #d4af37;
+  }
+  .free-gift-image img {
+    max-width: 80px;
+    height: auto;
+    border-radius: 4px;
+  }
+  .free-gift-info h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.8rem;
+    color: #121212;
+  }
+  .free-gift-info p {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #666;
+  }
+  .add-free-gift-btn {
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+  }
+  .icon-success {
+    color: #28a745;
+    font-size: 2.4rem;
+    font-weight: bold;
+  }
+  
+  @media screen and (max-width: 749px) {
+    .free-gift-details {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

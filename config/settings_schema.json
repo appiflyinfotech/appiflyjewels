@@ -1451,5 +1451,90 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Sale & Gift Settings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Free Gift Offer"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_free_gift",
+        "label": "Enable Free Gift System",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_gift_threshold",
+        "label": "Free Gift Threshold (Amount)",
+        "default": 2000,
+        "info": "Min amount to unlock free gift (e.g. 2000 for $2000)"
+      },
+      {
+        "type": "product",
+        "id": "free_gift_product",
+        "label": "Free Gift Product"
+      },
+      {
+        "type": "image_picker",
+        "id": "free_gift_image",
+        "label": "Custom Gift Image (Optional)"
+      },
+      {
+        "type": "text",
+        "id": "free_gift_title",
+        "label": "Gift Title",
+        "default": "Free Silver Chain"
+      },
+      {
+        "type": "textarea",
+        "id": "free_gift_description",
+        "label": "Gift Description",
+        "default": "A beautiful sterling silver chain to complement your purchase."
+      },
+      {
+        "type": "header",
+        "content": "Automatic Discounts"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_auto_discount",
+        "label": "Enable Automatic Discount Display",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "auto_discount_collection",
+        "label": "Applicable Collection"
+      },
+      {
+        "type": "range",
+        "id": "auto_discount_percent",
+        "min": 1,
+        "max": 99,
+        "step": 1,
+        "unit": "%",
+        "label": "Discount Percentage",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Coupon Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_coupon_input",
+        "label": "Enable Coupon Code Input in Cart",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "coupon_placeholder",
+        "label": "Coupon Input Placeholder",
+        "default": "Enter discount code"
+      }
+    ]
   }
 ]
